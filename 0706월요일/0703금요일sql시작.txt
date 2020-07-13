@@ -1,0 +1,210 @@
+
+
+윈도우버튼오른쪽 빈칸에  검색창 cmd입력
+C:\Users\USER> sqlplus system/1234
+SQL> clear screen 
+SQL> spool C:\Mtest\test.sql
+     
+
+    drop  table test ;
+    create  table test ( 
+      code  number(4) ,
+      name  varchar2(10),
+      title varchar2(10),
+      wdate date ,
+      cnt  number(3)
+    ) ;
+
+insert into test values(9991,'orange','like',sysdate, 46);
+insert into test values(9992,'apple','best',sysdate,97);
+insert into test values(9993,'cherry','firt',sysdate,36);
+
+insert into test values(7771,'red','right',sysdate, 39);
+insert into test values(7772,'blue','dark',sysdate,21);
+insert into test values(7773,'green','color',sysdate,45);
+
+insert into test values(3300,'aa','rain',sysdate,7);
+insert into test values(5500,'bb','snow',sysdate,8);
+insert into test values(6600,'cc','java',sysdate,9);
+
+insert into test values(1100,'tis','sun',sysdate,5);
+insert into test values(2200,'jis','mon',sysdate,0);
+insert into test values(2234,'kim','fri',sysdate,0);
+commit ;
+
+insert into test values(5543,'lee','red',sysdate,0);
+insert into test values(4432,'goo','blue',sysdate,0);
+insert into test values(3321,'choi','green',sysdate,0);
+commit ;
+
+
+
+SQL> select * from test  ;
+
+
+DML언어 조작하는 언어
+|- select 추출=조회=> 전체조회, 한건조회, 다수개조회
+SQL> select * from test  ; 조건없이 모든데이터출력
+SQL> select 필드 from T where 필드 == 값 ;  에러
+SQL> select * from test where code = 3300 ; 
+SQL> select * from test where code = 7772 ; 
+SQL> select * from test where cnt > 70 ; 
+SQL> select * from test where cnt <=70 ; 
+SQL> commit ;
+SQL> clear screen;
+SQL> select * from test where name = 'tis' ;
+SQL> select * from test where name = 'Tis' ;  --데이터출력X
+SQL> select * from test where name = 'TIS' ;
+SQL> select * from test where name  like = '%s%' ; --에러
+SQL> select * from test where name  like '%s%' ; 
+SQL> select * from test where title like '%e%' ; 
+SQL> select * from test where title like '%t%' ; 
+
+소트=sort
+SQL> select * from test  order by code ;
+SQL> select * from test  order by code desc ;
+SQL> select * from test  order by cnt desc ;
+SQL> select * from test where code > 5500 ; 
+SQL> select * from test where code >= 5500 ; 
+SQL> select * from test 
+     where code >= 5500 order by code ;
+
+SQL> select * from test 
+     where code >= 5500 order by code  desc ;
+     
+SQL> select * from test 
+     where code >= 5500 order by code asc ;
+
+SQL> select * from test  order by code ;
+
+행번호 rownum 조건없이,order by 없이 
+문제1]  행번호 rownum,열=필드표시
+SQL> select rownum, * from test  ;  -- 에러
+SQL> select rownum, code,name,title,wdate,cnt from test ;
+SQL> select  code,name,tile,wdate,cnt from test ; 에러
+
+SQL문장명령어 대소문자 구별없어요, SQL꺽쇠=프롬프트> 기술할때sql ~~;
+SQL> select * from test where name='lee';
+SQL> select * from test where name=='lee'; 에러
+SQL> select * from test where title='rain';
+SQL> select * from test where name like  '%e%';
+SQL> select * from test where title like '%a%';
+SQL> col name for a10
+SQL> col title for a10
+SQL> col cnt for 999
+
+SQL> select rownum, code,name,title,wdate,cnt from test ;
+SQL> select rownum, ts.* from test ts ;
+
+SQL>  select  2+3*7-4  from  dual  ;
+
+SQL>clear screen
+
+DML언어 조작하는 언어
+|- select 추출=조회=> 전체조회, 한건조회, 다수개조회
+   레코드갯수 cnt필드조회수 필드
+   레코드갯수 15건 
+   count(*) 
+   count(code)
+
+
+SQL> select * from test ;
+SQL> select count(*)  from test ;
+SQL> select count(*) ct  from test ;
+SQL> select count(*) as ct  from test ;
+SQL> select count(*) 총갯수  from test ;
+SQL> select count(*) Gtotal  from test ;
+SQL> select * from test where name like  '%e%';
+SQL> select  count(*) Gtotal from test where name like '%e%';
+
+문제2] code > 5500 레코드갯수
+SQL> select * from test where code > 5500 ; 
+SQL> select count(*) as Gtotal  from test ;
+SQL> select count(*) as Gtotal from test where code > 5500 ; 
+
+
+SQL> select count(code) as Gtotal  from test ;
+SQL> select max(cnt)  from test ;
+SQL> select min(cnt)  from test ;
+SQL> select code, name, title from test ;  --원하는필드만 
+SQL> commit ;
+
+
+SQL> delete * from test ;  --에러
+SQL> delete  from test where  code < 6600  ;  
+SQL> select * from test ;  --진짜삭제처리X, 데이터만 안보임
+SQL> rollback ;
+SQL> select * from test ;
+
+SQL> delete  from test where  code > 6600  ;  
+SQL> commit ;
+SQL> select * from test ;
+
+문제3] code 7700 , code 8800 => 2건 입력 
+       나머지 필드데이터값은 여러분 
+
+SQL> insert into test(code,name,title,wdate)
+ 2   values( 8811,'first', 'one', sysdate) ;
+
+SQL> insert into test(code,name,title,wdate)
+ 2   values( 8822,'two', 'three', sysdate) ;
+
+SQL> insert into test(code,name,title,wdate)
+ 2   values( 8833,'orange', 'fruit', sysdate) ;
+
+SQL> commit ;
+SQL> select * from  test ;
+SQL> select * from  test order by code asc  ; --asc생략가능
+SQL> select * from  test order by code desc ;
+
+SQL> select * from  test where cnt is null ;
+SQL> select * from  test where cnt is not null ;
+
+
+문제4] name필드 bb인사람의 데이터 cnt 79, title제목은 friday
+문제5] name필드 cc인사람의 데이터 cnt 98, title제목은 sunday
+
+SQL> update 테이블 set   필드=변경값  where  필드=데이터
+SQL> update test set cnt=79, title='friday' 
+     where  name='bb' ; 
+
+SQL> update test set  cnt=98, title='sunday'  
+     where  name='cc' ; 
+
+=================================================
+=================================================
+아래문장 실습금지 
+오후에 dept,salgrade,emp테이블
+SQL> delete  from test where  code > 2000  ;  
+SQL> commit ;
+SQL> select * from test ;
+=================================================
+=================================================
+=================================================
+    7~10개데이터 신규등록
+    commit ;
+    	
+SQL> 
+
+
+수업종료후 반드시 문 닫아주세요 
+SQL> spool off 
+SQL> exit
+C:\Users\USER> exit
+
+=========================================
+윈도우버튼오른쪽 빈칸에  검색창 cmd입력
+C:\Users\USER> sqlplus system/1234
+SQL> clear screen
+SQL> desc  test ;
+SQL> 
+SQL> select * from test ;
+SQL> clear screen ;
+SQL> exit
+C:\Users\USER> exit
+
+
+
+
+
+
